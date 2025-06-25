@@ -1,5 +1,6 @@
 package com.gestion.alumno_service.exception;
 
+import com.gestion.alumno_service.dto.ErrorResponseDTO;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,28 +17,32 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AlumnoDuplicadoException.class)
-    public ResponseEntity<Map<String, Object>> handleAlumnoDuplicado(AlumnoDuplicadoException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleAlumnoDuplicado(AlumnoDuplicadoException ex) {
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO();
+        errorResponse.setError("Conflict");
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.CONFLICT.value());
+
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Map.of(
-                        "timestamp", LocalDateTime.now(),
-                        "status", 409,
-                        "error", "Conflict",
-                        "message", ex.getMessage()
-                ));
+                .body(errorResponse);
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationError(WebExchangeBindException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleValidationError(WebExchangeBindException ex) {
         Map<String, Object> response = new HashMap<>();
         String message = ex.getFieldErrors().stream()
                 .map(err -> Objects.requireNonNullElse(err.getDefaultMessage(), "Error de validación"))
                 .findFirst()
                 .orElse("Error de validación");
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Bad Request");
-        response.put("message", message);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO();
+        errorResponse.setError("Bad Request");
+        errorResponse.setMessage(message);
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }
