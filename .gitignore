@@ -1,0 +1,13 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven targets en todos los módulos
+**/target/
+
+# Docker
+docker/data/
+
+# Otros (opcional)
+.DS_Store
+*.log

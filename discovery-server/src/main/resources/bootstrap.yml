@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: discovery-server  # Nombre de la aplicación para identificar el server Eureka
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
