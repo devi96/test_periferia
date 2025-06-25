@@ -30,7 +30,7 @@ public class AlumnoServiceImpl implements IAlumnoService {
     @Override
     public Flux<Alumno> findAllByEstado(String estado) {
         if (estado == null || estado.isBlank()) {
-            return repo.findAll();
+            return repo.findByEstado("ACTIVO");
         } else {
             return repo.findByEstado(estado);
         }

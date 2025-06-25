@@ -9,6 +9,7 @@ import com.gestion.alumno_service.model.EstadoAlumno;
 import com.gestion.alumno_service.service.IAlumnoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,7 @@ class EstudianteControllerTest {
     private AlumnoResponseDTO response;
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         request = new AlumnoRequestDTO(1L, "Juan", "Pérez", 20, EstadoAlumno.ACTIVO);
         alumno = new Alumno(1L, "Juan", "Pérez", 20, EstadoAlumno.ACTIVO);
         response = new AlumnoResponseDTO(1L, "Juan", "Pérez", 20, EstadoAlumno.ACTIVO);

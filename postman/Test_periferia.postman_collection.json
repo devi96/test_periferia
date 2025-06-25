@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "8c306876-ffcb-4359-9895-d70f7619f5c3",
+		"name": "Test_periferia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5391752"
+	},
+	"item": [
+		{
+			"name": "getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9030/alumnos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9030",
+					"path": [
+						"alumnos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Lucía\",\r\n  \"apellido\": \"Gómez\",\r\n  \"edad\": 21,\r\n  \"estado\": \"ACTIVO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9030/alumnos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9030",
+					"path": [
+						"alumnos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

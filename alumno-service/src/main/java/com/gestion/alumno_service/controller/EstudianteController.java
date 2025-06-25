@@ -25,20 +25,26 @@ public class EstudianteController {
 
     @GetMapping
     public Mono<ResponseEntity<Flux<AlumnoResponseDTO>>> findAll(@RequestParam(value = "estado", required = false, defaultValue = "ACTIVO") String estado) {
-        Flux<AlumnoResponseDTO> alumnos = service.findAllByEstado(estado)
-                .map(mapper::convertToDto);
-
-        return Mono.just(ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(alumnos))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+        return Mono.just(
+                ResponseEntity
+                        .ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(
+                                service.findAllByEstado(estado)
+                                        .map(mapper::convertToDto)));
     }
 
     @PostMapping
-    public Mono<ResponseEntity<AlumnoResponseDTO>> save(@Valid @RequestBody AlumnoRequestDTO alu) {
-        return service.save(mapper.convertToEntity(alu))
-                .then(Mono.just(ResponseEntity.status(HttpStatus.CREATED).build()));
+    public Mono<ResponseEntity<AlumnoResponseDTO>> save(@Valid @RequestBody Mono<AlumnoRequestDTO> alumno) {
+        return alumno
+                .map(mapper::convertToEntity)
+                .flatMap(service::save)
+                .map(e ->
+                        ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.convertToDto(e))
+                );
     }
 
 

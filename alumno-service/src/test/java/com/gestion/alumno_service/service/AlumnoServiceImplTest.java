@@ -6,9 +6,11 @@ import com.gestion.alumno_service.repository.IAlumnoRepo;
 import com.gestion.alumno_service.service.impl.AlumnoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -53,11 +55,11 @@ public class AlumnoServiceImplTest {
     }
 
     @Test
-    void findAllByEstado_ShouldReturnAll_WhenEstadoIsBlank() {
+    void findAllByEstado_ShouldReturnAllActive_WhenEstadoIsBlank() {
         Alumno a1 = new Alumno(1L, "Juan", "Perez", 22, EstadoAlumno.ACTIVO);
         Alumno a2 = new Alumno(2L, "Ana", "Lopez", 21, EstadoAlumno.ACTIVO);
 
-        when(repo.findAll()).thenReturn(Flux.just(a1,a2));
+        when(repo.findByEstado("ACTIVO")).thenReturn(Flux.just(a1,a2));
 
         StepVerifier.create(service.findAllByEstado(""))
                 .expectNext(a1,a2)
